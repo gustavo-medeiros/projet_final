@@ -1,0 +1,120 @@
+<!--
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{% for project in list_projects %}
+    <li> {{project}} </li>
+{% endfor %}
+
+</body>
+</html>
+-->
+
+
+
+<!doctype html>
+<html lang="en">
+  <head>
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="/docs/4.0/assets/img/favicons/favicon.ico">
+
+    <title>Projects</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/4.0/examples/starter-template/">
+
+    <!-- Bootstrap core CSS -->
+    <link href="../../dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="starter-template.css" rel="stylesheet">
+  </head>
+
+  <body>
+
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+      <a class="navbar-brand" href="/projects">TaskManager</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="/projects">Home <span class="sr-only">(current)</span></a>
+          </li>
+
+        </ul>
+          <font face="arial" color="white">Welcome {{user.first_name}} {{user.last_name}} &ensp;&ensp; </font>
+        <a class="btn btn-danger" href="/accounts/logout" role="button">LOGOUT</a>
+      </div>
+    </nav>
+
+    <main .ml-1>
+        <br><br><br> &ensp;
+        <div class="col-1"></div>
+        <div class="col-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/projects">Projects</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">{{project.name}}</li>
+                </ol>
+        </nav>
+        </div>
+        <br>
+        <b><font face="arial" color="" size="10">&ensp;&ensp; {{project.name}}</font></b>
+        <br><br><br>
+
+        <div class="col-1"></div>
+        <div class="col-12">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Task</th>
+                    <th scope="col">Assignee</th>
+                    <th scope="col">Start date</th>
+                    <th scope="col">Due date</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for task in list_tasks %}
+                    <tr>
+                        <th scope="row"><a href="/project/{{project.id}}/{{task.id}}">{{task.name}}</a></th>
+                        <td scope="row">{{task.assignee}}</td>
+                        <td scope="row">{{task.start_date}}</td>
+                        <td scope="row">{{task.due_date}}</td>
+                        <td scope="row">
+                            <a href="/projects">
+                                <img src="https://cdn.onlinewebfonts.com/svg/img_148628.png" width="20" height="20">
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+
+        </table>
+        </div>
+
+
+
+
+
+    </main><!-- /.container -->
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
+    <script src="../../assets/js/vendor/popper.min.js"></script>
+    <script src="../../dist/js/bootstrap.min.js"></script>
+  </body>
+</html>
