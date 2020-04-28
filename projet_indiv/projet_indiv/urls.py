@@ -22,4 +22,6 @@ urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),
     path('projects/', views.projects),
     path('project/<int:id_project>',views.project),
+    path('task/<int:id_task>', views.task),
+    path('newtask/',views.newtask),
 ]

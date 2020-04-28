@@ -58,7 +58,7 @@
     </nav>
 
     <main .ml-1>
-        <br><br><br> &ensp;
+        <br><br> &ensp;
         <div class="col-1"></div>
         <div class="col-12">
             <nav aria-label="breadcrumb">
@@ -69,8 +69,14 @@
         </nav>
         </div>
         <br>
-        <b><font face="arial" color="" size="10">&ensp;&ensp; {{project.name}}</font></b>
-        <br><br><br>
+        <div class="jumbotron jumbotron-fluid">
+          <div class="container">
+            <h1 class="display-4">{{project.name}}</h1>
+            <p class="lead">Here is the list the tasks involved in {{project.name}}</p>
+              <a class="btn btn-primary" href="/newtask/" role="button">New Task</a>
+          </div>
+        </div>
+        <br>
 
         <div class="col-1"></div>
         <div class="col-12">
@@ -87,8 +93,8 @@
             <tbody>
                 {% for task in list_tasks %}
                     <tr>
-                        <th scope="row"><a href="/project/{{project.id}}/{{task.id}}">{{task.name}}</a></th>
-                        <td scope="row">{{task.assignee}}</td>
+                        <th scope="row"><a href="/task/{{task.id}}">{{task.name}}</a></th>
+                        <td scope="row"><span class="badge badge-primary">{{task.assignee}}</span></td>
                         <td scope="row">{{task.start_date}}</td>
                         <td scope="row">{{task.due_date}}</td>
                         <td scope="row">
