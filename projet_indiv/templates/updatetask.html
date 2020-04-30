@@ -13,7 +13,7 @@
     <meta name="author" content="">
     <link rel="icon" href="/docs/4.0/assets/img/favicons/favicon.ico">
 
-    <title>NewTask</title>
+    <title>UpdateTask</title>
 
     <link rel="canonical" href="https://getbootstrap.com/docs/4.0/examples/starter-template/">
 
@@ -61,58 +61,59 @@
         <br><br><br><br>
         <div class="jumbotron jumbotron-fluid">
           <div class="container">
-            <h1 class="display-4">New Task</h1>
-            <p class="lead">A form to create a new task !</p>
+            <h1 class="display-4">Update Task : {{utask.name}}</h1>
+            <p class="lead">A form to update a task !</p>
           </div>
         </div>
         <br>
     <div class="col-2">
-    <form action="/newtask/" method="post">
+    <form action="/updatetask/{{utask.id}}" method="post">
         {% csrf_token %}
           <div class="form-group">
           <label for="id_project">Project:</label>
           <select class="form-control" name="project" required id="id_project">
-            <option selected>Choose project</option>
-            {% for project in list_projects %}
-              <option value="{{project.id}}">{{project.name}}</option>
-            {% endfor %}
+            <option value="{{utask.project.id}}" selected>{{utask.project.name}}</option>
           </select>
         </div>
         <div class="form-group">
           <label for="id_name">Name:</label>
-          <input type="text" class="form-control" name="name" required id="id_name" placeholder="Name">
+          <input type="text" class="form-control" name="name" required id="id_name" value="{{utask.name}}">
         </div>
         <div class="form-group">
           <label for="id_description">Description:</label>
-          <input type="text" class="form-control" name="description" required id="id_description" placeholder="Description">
+          <input type="text" class="form-control" name="description" required id="id_description" value="{{utask.description}}">
         </div>
         <div class="form-group">
           <label for="id_assignee">Assignee</label>
           <select class="form-control" name="assignee" required id="id_assignee">
-            <option selected>Choose assignee</option>
+            <option selected value="{{utask.assignee.id}}">{{utask.assignee.username}}</option>
             {% for user in list_users %}
-              <option value="{{user.id}}">{{user.username}}</option>
+              {% if user.id != utask.assignee.id %}
+                <option value="{{user.id}}">{{user.username}}</option>
+              {% endif %}}
             {% endfor %}
           </select>
         </div>
         <div class="form-group">
           <label for="id_start_date">Start date (YYYY-MM-DD):</label>
-          <input type="text" class="form-control" name="start_date" required id="id_start_date" placeholder="YYYY-MM-DD">
+          <input type="text" class="form-control" name="start_date" required id="id_start_date" value="{{utask.start_date.year}}-{{utask.start_date.month}}-{{utask.start_date.day}}">
         </div>
         <div class="form-group">
           <label for="id_due_date">Due date (YYYY-MM-DD):</label>
-          <input type="text" class="form-control" name="due_date" required id="id_due_date" placeholder="YYYY-MM-DD">
+          <input type="text" class="form-control" name="due_date" required id="id_due_date" value="{{utask.due_date.year}}-{{utask.due_date.month}}-{{utask.due_date.day}}">
         </div>
         <div class="form-group">
           <label for="id_priority">Priority:</label>
-          <input type="number" class="form-control" name="priority" required id="id_priority">
+          <input type="number" class="form-control" name="priority" required id="id_priority" value="{{utask.priority}}">
         </div>
         <div class="form-group">
           <label for="id_status">status</label>
           <select class="form-control" name="status" required id="id_status">
-            <option selected>Choose status</option>
+            <option selected value="{{utask.status.id}}">{{utask.status.name}}</option>
             {% for status in list_status %}
-              <option value="{{status.id}}">{{status.name}}</option>
+              {% if status.id != utask.status.id %}
+                <option value="{{status.id}}">{{status.name}}</option>
+              {% endif %}}
             {% endfor %}
           </select>
         </div>

@@ -56,3 +56,40 @@ def newtask(request):
 
     return render(request, 'newtask.html', locals())
 
+@login_required
+def updatetask(request,id_task):
+    utask=Task.objects.get(id=id_task)
+    # if this is a POST request we need to process the form data
+    if request.method == 'POST':
+        # create a form instance and populate it with data from the request:
+        form = NewTaskForm(request.POST, instance=utask)
+        # check whether it's valid:
+        if form.is_valid():
+            # process the data in form.cleaned_data as required
+            # ...
+            # redirect to a new URL:
+            utask.project=form.cleaned_data['project']
+            utask.name = form.cleaned_data['name']
+            utask.description = form.cleaned_data['description']
+            utask.assignee = form.cleaned_data['assignee']
+            utask.due_date = form.cleaned_data['due_date']
+            utask.start_date= form.cleaned_data['start_date']
+            utask.priority = form.cleaned_data['priority']
+            utask.status = form.cleaned_data['status']
+            utask.save()
+
+
+            project=form['project'].value()
+
+
+            return task(request, utask.id)
+
+    # if a GET (or any other method) we'll create a blank form
+    else:
+        form = NewTaskForm(request.POST, instance=utask)
+        list_projects=Project.objects.all()
+        list_users=User.objects.all()
+        list_status=Status.objects.all()
+
+    return render(request, 'updatetask.html', locals())
+

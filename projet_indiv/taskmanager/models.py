@@ -34,7 +34,7 @@ class Task(models.Model):
     status = models.ForeignKey(Status, on_delete = models.CASCADE)
 
     class Meta:
-        ordering = ['due_date']
+        ordering = ['-priority']
 
     def __str__(self):
         return self.name
