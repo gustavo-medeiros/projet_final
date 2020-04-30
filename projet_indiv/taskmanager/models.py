@@ -4,6 +4,7 @@ from django.db import models
 
 # Create your models here.
 
+# Definition d'un projet
 class Project(models.Model):
     name = models.CharField(max_length=200)
     members = models.ManyToManyField(User)
@@ -14,6 +15,8 @@ class Project(models.Model):
     def __str__(self):
         return self.name
 
+
+# Definition d'un status
 class Status(models.Model):
     name = models.CharField(max_length=100)
 
@@ -23,15 +26,17 @@ class Status(models.Model):
     def __str__(self):
         return self.name
 
+
+# Definition d'une tache
 class Task(models.Model):
-    project = models.ForeignKey(Project, on_delete = models.CASCADE)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
     name = models.CharField(max_length=200)
     description = models.TextField()
-    assignee = models.ForeignKey(User, on_delete = models.CASCADE)
+    assignee = models.ForeignKey(User, on_delete=models.CASCADE)
     start_date = models.DateField()
     due_date = models.DateField()
     priority = models.IntegerField()
-    status = models.ForeignKey(Status, on_delete = models.CASCADE)
+    status = models.ForeignKey(Status, on_delete=models.CASCADE)
 
     class Meta:
         ordering = ['-priority']
@@ -40,6 +45,7 @@ class Task(models.Model):
         return self.name
 
 
+# Definition d'une entree dans le journal
 class Journal(models.Model):
     date = models.DateField()
     entry = models.CharField(max_length=200)
@@ -53,13 +59,3 @@ class Journal(models.Model):
         return self.entry
 
 
-
-
-
-
-
-class Profil(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return self.user.username
