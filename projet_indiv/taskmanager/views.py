@@ -5,7 +5,7 @@ from django.shortcuts import render
 # Create your views here.
 from taskmanager.models import Project, Task, Journal, Status
 
-from taskmanager.forms import NewTaskForm
+from taskmanager.forms import NewTaskForm, NewJournalForm
 
 
 @login_required
@@ -79,6 +79,8 @@ def updatetask(request,id_task):
             utask.save()
 
 
+
+
             project=form['project'].value()
 
 
@@ -93,3 +95,30 @@ def updatetask(request,id_task):
 
     return render(request, 'updatetask.html', locals())
 
+@login_required
+def newjournal(request,id_task):
+    jtask=Task.objects.get(id=id_task)
+    # if this is a POST request we need to process the form data
+    if request.method == 'POST':
+        # create a form instance and populate it with data from the request:
+        form = NewJournalForm(request.POST)
+        # check whether it's valid:
+        if form.is_valid():
+            # process the data in form.cleaned_data as required
+            # ...
+            # redirect to a new URL:
+            form.save()
+
+
+
+
+            return task(request, jtask.id)
+
+    # if a GET (or any other method) we'll create a blank form
+    else:
+        form = NewJournalForm()
+        list_projects=Project.objects.all()
+        list_users=User.objects.all()
+        list_status=Status.objects.all()
+
+    return render(request, 'newjournal.html', locals())

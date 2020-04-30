@@ -24,5 +24,6 @@ urlpatterns = [
     path('project/<int:id_project>',views.project),
     path('task/<int:id_task>', views.task),
     path('newtask/',views.newtask),
-    path('updatetask/<int:id_task>',views.updatetask)
+    path('updatetask/<int:id_task>',views.updatetask),
+    path('newjournal/<int:id_task>',views.newjournal),
 ]

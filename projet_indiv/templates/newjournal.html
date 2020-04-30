@@ -1,0 +1,98 @@
+
+
+
+
+
+<!doctype html>
+<html lang="en">
+  <head>
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="/docs/4.0/assets/img/favicons/favicon.ico">
+
+    <title>UpdateTask</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/4.0/examples/starter-template/">
+
+    <!-- Bootstrap core CSS -->
+    <link href="../../dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="starter-template.css" rel="stylesheet">
+  </head>
+
+  <body>
+      <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+      <a class="navbar-brand" href="/projects">TaskManager</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="/projects">Home <span class="sr-only">(current)</span></a>
+          </li>
+            <!--
+          <li class="nav-item">
+            <a class="nav-link" href="#">Link</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link disabled" href="#">Disabled</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="http://example.com" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</a>
+            <div class="dropdown-menu" aria-labelledby="dropdown01">
+              <a class="dropdown-item" href="#">Action</a>
+              <a class="dropdown-item" href="#">Another action</a>
+              <a class="dropdown-item" href="#">Something else here</a>
+            </div>
+          </li>
+          -->
+        </ul>
+          <font face="arial" color="white">Welcome {{user.first_name}} {{user.last_name}} &ensp;&ensp; </font>
+        <a class="btn btn-danger" href="/accounts/logout" role="button">LOGOUT</a>
+      </div>
+    </nav>
+
+    <main .ml-1>
+        <br><br><br><br>
+        <div class="jumbotron jumbotron-fluid">
+          <div class="container">
+            <h1 class="display-4">New entry : {{jtask.name}}</h1>
+            <p class="lead">A form to add an entry to a task !</p>
+          </div>
+        </div>
+        <br>
+    <div class="col-2">
+    <form action="/newjournal/{{jtask.id}}" method="post">
+        {% csrf_token %}
+          <div class="form-group">
+          <label for="id_task">Task:</label>
+          <select class="form-control" name="task" required id="id_task">
+            <option value="{{jtask.id}}" selected>{{jtask.name}}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="id_entry">Entry:</label>
+          <input type="text" class="form-control" name="entry" required id="id_entry" placeholder="Entry">
+        </div>
+        <div class="form-group">
+          <label for="id_author">Author</label>
+          <select class="form-control" name="author" required id="id_author">
+            <option selected value="{{jtask.assignee.id}}">{{jtask.assignee.username}}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="id_date">Date (YYYY-MM-DD):</label>
+          <input type="text" class="form-control" name="date" required id="id_date" placeholder="YYYY-MM-DD">
+        </div>
+
+      <button type="submit" value="submit" class="btn btn-primary">Save</button>
+    <br><br><br><br><br><br>
+    </form>
+    </div>
+  </body>
+</html>

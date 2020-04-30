@@ -47,7 +47,7 @@ class Journal(models.Model):
     task = models.ForeignKey(Task, on_delete=models.CASCADE)
 
     class Meta:
-        ordering = ['date']
+        ordering = ['-date']
 
     def __str__(self):
         return self.entry
