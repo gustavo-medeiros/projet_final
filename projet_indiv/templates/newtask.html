@@ -1,8 +1,3 @@
-
-
-
-
-
 <!doctype html>
 <html lang="en" class="h-100">
   <head>
@@ -24,105 +19,127 @@
     <link href="starter-template.css" rel="stylesheet">
   </head>
 
+  <!-- start of body -->
   <body class="h-100">
-      <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-      <a class="navbar-brand" href="/projects">TaskManager</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarsExampleDefault">
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item active">
-            <a class="nav-link" href="/projects">Home <span class="sr-only">(current)</span></a>
-          </li>
-            <!--
-          <li class="nav-item">
-            <a class="nav-link" href="#">Link</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link disabled" href="#">Disabled</a>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="http://example.com" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</a>
-            <div class="dropdown-menu" aria-labelledby="dropdown01">
-              <a class="dropdown-item" href="#">Action</a>
-              <a class="dropdown-item" href="#">Another action</a>
-              <a class="dropdown-item" href="#">Something else here</a>
-            </div>
-          </li>
-          -->
-        </ul>
-          <font face="arial" color="white">Welcome {{user.first_name}} {{user.last_name}} &ensp;&ensp; </font>
-        <a class="btn btn-danger" href="/accounts/logout" role="button">LOGOUT</a>
-      </div>
-    </nav>
+        <!-- Navigation bar-->
+        <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
 
-    <main .ml-1>
-        <br><br><br><br>
-        <div class="jumbotron jumbotron-fluid">
-          <div class="container">
-            <h1 class="display-4">New Task</h1>
-            <p class="lead">A form to create a new task !</p>
+          <!-- TaskManager button-->
+          <a class="navbar-brand" href="/projects">TaskManager</a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+
+          <!-- Items in nav bar button -->
+          <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+            <ul class="navbar-nav mr-auto">
+              <li class="nav-item active">
+                <a class="nav-link" href="/projects">Home <span class="sr-only">(current)</span></a>
+              </li>
+            </ul>
+
+            <font face="arial" color="white">Welcome {{user.first_name}} {{user.last_name}} &ensp;&ensp; </font>
+            <a class="btn btn-danger" href="/accounts/logout" role="button">LOGOUT</a>
           </div>
-        </div>
-        <br>
-    <div class="container h-100">
-    <div class="row h-100 justify-content-center align-items-center">
-        <div class="col-10 col-md-8 col-lg-6">
-    <form action="/newtask/" method="post">
-        {% csrf_token %}
-          <div class="form-group">
-          <label for="id_project">Project:</label>
-          <select class="form-control" name="project" required id="id_project">
-            <option selected>Choose project</option>
-            {% for project in list_projects %}
-              <option value="{{project.id}}">{{project.name}}</option>
-            {% endfor %}
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="id_name">Name:</label>
-          <input type="text" class="form-control" name="name" required id="id_name" placeholder="Name">
-        </div>
-        <div class="form-group">
-          <label for="id_description">Description:</label>
-          <input type="text" class="form-control" name="description" required id="id_description" placeholder="Description">
-        </div>
-        <div class="form-group">
-          <label for="id_assignee">Assignee</label>
-          <select class="form-control" name="assignee" required id="id_assignee">
-            <option selected>Choose assignee</option>
-            {% for user in list_users %}
-              <option value="{{user.id}}">{{user.username}}</option>
-            {% endfor %}
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="id_start_date">Start date (YYYY-MM-DD):</label>
-          <input type="text" class="form-control" name="start_date" required id="id_start_date" placeholder="YYYY-MM-DD">
-        </div>
-        <div class="form-group">
-          <label for="id_due_date">Due date (YYYY-MM-DD):</label>
-          <input type="text" class="form-control" name="due_date" required id="id_due_date" placeholder="YYYY-MM-DD">
-        </div>
-        <div class="form-group">
-          <label for="id_priority">Priority:</label>
-          <input type="number" class="form-control" name="priority" required id="id_priority">
-        </div>
-        <div class="form-group">
-          <label for="id_status">status</label>
-          <select class="form-control" name="status" required id="id_status">
-            <option selected>Choose status</option>
-            {% for status in list_status %}
-              <option value="{{status.id}}">{{status.name}}</option>
-            {% endfor %}
-          </select>
-        </div>
-      <button type="submit" value="submit" class="btn btn-primary">Save</button>
-    <br><br><br><br><br><br>
-    </form>
-    </div>
-    </div>
-    </div>
+        </nav>
+        <!-- End of Navigation Bar -->
+
+        <!--- main container -->
+        <main .ml-1>
+            <br><br><br><br>
+
+            <!-- Jumbotron -->
+            <div class="jumbotron jumbotron-fluid">
+              <div class="container">
+                <h1 class="display-4">New Task</h1>
+                <p class="lead">A form to create a new task !</p>
+              </div>
+            </div>
+
+            <br>
+
+            <div class="container h-100">
+                <div class="row h-100 justify-content-center align-items-center">
+                    <div class="col-10 col-md-8 col-lg-6">
+
+                        <!-- Form -->
+                        <form action="/newtask/" method="post">
+                             {% csrf_token %}
+
+                            <!-- Select project -->
+                            <div class="form-group">
+                                <label for="id_project">Project:</label>
+                                <select class="form-control" name="project" required id="id_project">
+                                    <option selected>Choose project</option>
+                                    {% for project in list_projects %}
+                                      <option value="{{project.id}}">{{project.name}}</option>
+                                    {% endfor %}
+                                 </select>
+                            </div>
+
+                            <!-- Enter name -->
+                            <div class="form-group">
+                                 <label for="id_name">Name:</label>
+                                <input type="text" class="form-control" name="name" required id="id_name" placeholder="Name">
+                            </div>
+
+                            <!-- enter description --->
+                            <div class="form-group">
+                                <label for="id_description">Description:</label>
+                                <input type="text" class="form-control" name="description" required id="id_description" placeholder="Description">
+                            </div>
+
+                            <!-- Select Assignee -->
+                            <div class="form-group">
+                                <label for="id_assignee">Assignee</label>
+                                <select class="form-control" name="assignee" required id="id_assignee">
+                                    <option selected>Choose assignee</option>
+                                    {% for user in list_users %}
+                                        <option value="{{user.id}}">{{user.username}}</option>
+                                     {% endfor %}
+                                </select>
+                            </div>
+
+                            <!-- Start Date -->
+                            <div class="form-group">
+                                <label for="id_start_date">Start date (YYYY-MM-DD):</label>
+                                <input type="text" class="form-control" name="start_date" required id="id_start_date" placeholder="YYYY-MM-DD">
+                             </div>
+
+                            <!-- Due Date -->
+                            <div class="form-group">
+                                <label for="id_due_date">Due date (YYYY-MM-DD):</label>
+                                <input type="text" class="form-control" name="due_date" required id="id_due_date" placeholder="YYYY-MM-DD">
+                            </div>
+
+                            <!-- Enter priority -->
+                            <div class="form-group">
+                                <label for="id_priority">Priority:</label>
+                                <input type="number" class="form-control" name="priority" required id="id_priority">
+                            </div>
+
+                            <!-- Select status -->
+                            <div class="form-group">
+                                <label for="id_status">status</label>
+                                <select class="form-control" name="status" required id="id_status">
+                                    <option selected>Choose status</option>
+                                    {% for status in list_status %}
+                                        <option value="{{status.id}}">{{status.name}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <button type="submit" value="submit" class="btn btn-primary">Save</button>
+
+                            <br><br><br><br><br><br>
+                        </form>
+                        <!-- end of form -->
+
+                    </div>
+                </div>
+            </div>
+        </main>
+        <!-- end of main container -->
+
   </body>
 </html>
