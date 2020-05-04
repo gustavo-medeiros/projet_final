@@ -1,7 +1,7 @@
 from django.contrib import admin
 from .models import Project, Task, Status, Journal
 
-# Register your models here.
+# Models we can manage from Django administration
 
 admin.site.register(Project)
 admin.site.register(Task)
