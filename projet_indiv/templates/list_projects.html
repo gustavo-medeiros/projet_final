@@ -81,7 +81,7 @@
             <tbody>
                 {% for project in list_projects %}
                     <tr>
-                        <th scope="row"><button type="button" class="btn btn-info" href="/project/{{project.0.id}}">{{project.0}}</button></th>
+                        <th scope="row"><a type="button" class="btn btn-info" href="/project/{{project.0.id}}">{{project.0}}</a></th>
                         <td scope="row">
 
                             {% for member in project.0.members.all%}
