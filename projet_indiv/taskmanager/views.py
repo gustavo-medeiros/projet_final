@@ -59,6 +59,14 @@ def newtask(request):
             project = form['project'].value()
 
             return task(request, form.instance.id) # on affiche la page associee a cette tache
+        else:
+            form = NewTaskForm()
+            list_projects = Project.objects.all()
+            list_users = User.objects.all()
+            list_status = Status.objects.all()
+
+        return render(request, 'newtask.html', locals())
+
 
     # if a GET (or any other method) we'll create a blank form
     else:
