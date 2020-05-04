@@ -6,9 +6,7 @@ from django.db import models
 
 # Create your models here.
 
-# Definition d'un projet
-
-
+# Definition of a project
 class Project(models.Model):
     name = models.CharField(max_length=200)
     members = models.ManyToManyField(User)
@@ -20,7 +18,7 @@ class Project(models.Model):
         return self.name
 
 
-# Definition d'un status
+# Definition of a status
 class Status(models.Model):
     name = models.CharField(max_length=100)
 
@@ -31,7 +29,7 @@ class Status(models.Model):
         return self.name
 
 
-# Definition d'une tache
+# Definition of a task
 class Task(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     name = models.CharField(max_length=200)
@@ -43,21 +41,21 @@ class Task(models.Model):
     status = models.ForeignKey(Status, on_delete=models.CASCADE)
 
     class Meta:
-        ordering = ['-priority']
+        ordering = ['-priority']  # Ordered by priority
 
     def __str__(self):
         return self.name
 
 
-# Definition d'une entree dans le journal
+# Definition of a Journal entry
 class Journal(models.Model):
-    date = models.DateTimeField(default=datetime.now())
+    date = models.DateTimeField(default=datetime.now())  # date/time autofilled (time-zone respected)
     entry = models.CharField(max_length=200)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     task = models.ForeignKey(Task, on_delete=models.CASCADE)
 
     class Meta:
-        ordering = ['-date']
+        ordering = ['-date']  # The more recent entry will be on top
 
     def __str__(self):
         return self.entry
