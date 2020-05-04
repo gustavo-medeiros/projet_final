@@ -1,25 +1,11 @@
-<!--
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-{% for project in list_projects %}
-    <li> {{project}} </li>
-{% endfor %}
-
-</body>
-</html>
--->
-
 
 
 <!doctype html>
 <html lang="en">
+
+
   <head>
-            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
@@ -39,74 +25,96 @@
 
   <body>
 
+    <!-- Navigation bar-->
     <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+
+      <!-- TaskManager button-->
       <a class="navbar-brand" href="/projects">TaskManager</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
 
+      <!-- Items in nav bar button -->
       <div class="collapse navbar-collapse" id="navbarsExampleDefault">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item active">
             <a class="nav-link" href="/projects">Home <span class="sr-only">(current)</span></a>
           </li>
-
         </ul>
-          <font face="arial" color="white">Welcome {{user.first_name}} {{user.last_name}} &ensp;&ensp; </font>
+
+        <font face="arial" color="white">Welcome {{user.first_name}} {{user.last_name}} &ensp;&ensp; </font>
         <a class="btn btn-danger" href="/accounts/logout" role="button">LOGOUT</a>
       </div>
     </nav>
+    <!-- End of Navigation Bar -->
 
+    <!-- main container -->
     <main .ml-1>
         <br><br><br><br>
+
+        <!-- Jumbotron -->
         <div class="jumbotron jumbotron-fluid">
           <div class="container">
             <h1 class="display-4">Projects</h1>
             <p class="lead">Here is the list of your projects</p>
           </div>
         </div>
+        <!-- End of Jumbotron -->
+
         <br><br><br>
 
-       <div class="col-1"></div>
+        <!-- Table of projects -->
         <div class="col-12">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th scope="col">Project</th>
-                    <th scope="col">Members</th>
-                    <th scope="col">Highest priority task</th>
-                    <th scope="col">Next due date</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for project in list_projects %}
+            <table class="table">
+
+                <!-- Table head -->
+                <thead>
                     <tr>
-                        <th scope="row"><a type="button" class="btn btn-info" href="/project/{{project.0.id}}">{{project.0}}</a></th>
-                        <td scope="row">
-
-                            {% for member in project.0.members.all%}
-
-                                <span class="badge badge-primary">
-                                    {{member}}
-                                </span>
-                            <br>
-                            {% endfor %}
-                        </td>
-                            <td scope="row"><a href="/task/{{project.1.0.id}}"><span class="badge badge-warning">{{project.1.0}}</span></a><br>Priority : {{project.1.0.priority}}</td>
-                            <td scope="row"><a href="/task/{{project.2.0.id}}"><span class="badge badge-danger">{{project.2.0}}</span></a><br>{{project.1.0.due_date}}</td>
-
+                        <th scope="col">Project</th>
+                        <th scope="col">Members</th>
+                        <th scope="col">Highest priority task</th>
+                        <th scope="col">Next due date</th>
                     </tr>
-                {% endfor %}
-            </tbody>
+                </thead>
 
-        </table>
+                <!-- Table body -->
+                <tbody>
+                    {% for project in list_projects %}
+                        <tr>
+                            <th scope="row"><a type="button" class="btn btn-info" href="/project/{{project.0.id}}">{{project.0}}</a></th>
+
+                            <!-- row for members -->
+                            <td scope="row">
+                                {% for member in project.0.members.all%}
+                                    <span class="badge badge-primary"> {{member}} </span>
+                                <br>
+                                {% endfor %}
+                            </td>
+
+                            <!-- row for highest priority task -->
+                            <td scope="row"><a href="/task/{{project.1.0.id}}">
+                                <span class="badge badge-warning">{{project.1.0}}</span></a><br>Priority : {{project.1.0.priority}}
+                            </td>
+
+                            <!-- row for next due date -->
+                            <td scope="row"><a href="/task/{{project.2.0.id}}">
+                                <span class="badge badge-danger">{{project.2.0}}</span></a><br>{{project.1.0.due_date}}
+                            </td>
+
+                        </tr>
+                    {% endfor %}
+                </tbody>
+                <!-- End of table body -->
+
+            </table>
         </div>
+        <!-- End of table -->
 
 
 
 
 
-    </main><!-- /.container -->
+    </main><!-- End of main container -->
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
