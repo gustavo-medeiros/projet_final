@@ -3,15 +3,17 @@ from django.forms import forms, ModelForm
 from taskmanager.models import Task, Journal
 
 
-# Un form a partir du model d'une tache
+# Different forms
+
+# A form based on the Task model
 class NewTaskForm(ModelForm):
     class Meta:
         model = Task
         fields = '__all__'
 
 
-# Un form a partir du modele d'un journal
+# A form based on the Journal model
 class NewJournalForm(ModelForm):
     class Meta:
         model = Journal
-        exclude= ('date',)
+        exclude = ('date',)  # Date/time auto-filled with the current date/time
