@@ -12,7 +12,16 @@ from taskmanager.forms import NewTaskForm, NewJournalForm
 @login_required
 def projects(request):
     user = request.user
-    list_projects = Project.objects.filter(members=user)  # On affiche uniquement les projets de l'utilisateur connecte
+    list_projects = []  # On affiche uniquement les projets de l'utilisateur connecte
+    infos=[]
+    count=0
+    for project in Project.objects.filter(members=user):
+        infos.append(list(Project.objects.filter(members=user))[count])
+        infos.append(Task.objects.filter(project=project))
+        infos.append(Task.objects.filter(project=project).order_by("due_date"))
+        list_projects.append(infos)
+        infos=[]
+        count+=1
     return render(request, 'list_projects.html', locals())
 
 
