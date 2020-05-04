@@ -14,4 +14,4 @@ class NewTaskForm(ModelForm):
 class NewJournalForm(ModelForm):
     class Meta:
         model = Journal
-        fields = '__all__'
+        exclude= ('date',)

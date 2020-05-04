@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.contrib.auth.models import User
 from django.db import models
 
@@ -5,6 +7,8 @@ from django.db import models
 # Create your models here.
 
 # Definition d'un projet
+
+
 class Project(models.Model):
     name = models.CharField(max_length=200)
     members = models.ManyToManyField(User)
@@ -47,7 +51,7 @@ class Task(models.Model):
 
 # Definition d'une entree dans le journal
 class Journal(models.Model):
-    date = models.DateField()
+    date = models.DateTimeField(default=datetime.now())
     entry = models.CharField(max_length=200)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     task = models.ForeignKey(Task, on_delete=models.CASCADE)
