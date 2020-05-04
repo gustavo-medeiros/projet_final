@@ -1,65 +1,55 @@
-<!--
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-{% for project in list_projects %}
-    <li> {{project}} </li>
-{% endfor %}
-
-</body>
-</html>
--->
-
-
-
 <!doctype html>
 <html lang="en">
-  <head>
-            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="icon" href="/docs/4.0/assets/img/favicons/favicon.ico">
+    <!-- start of head -->
+    <head>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <link rel="icon" href="/docs/4.0/assets/img/favicons/favicon.ico">
 
-    <title>Task</title>
+        <title>UpdateTask</title>
 
-    <link rel="canonical" href="https://getbootstrap.com/docs/4.0/examples/starter-template/">
+        <link rel="canonical" href="https://getbootstrap.com/docs/4.0/examples/starter-template/">
 
-    <!-- Bootstrap core CSS -->
-    <link href="../../dist/css/bootstrap.min.css" rel="stylesheet">
+        <!-- Bootstrap core CSS -->
+        <link href="../../dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- Custom styles for this template -->
-    <link href="starter-template.css" rel="stylesheet">
-  </head>
+        <!-- Custom styles for this template -->
+        <link href="starter-template.css" rel="stylesheet">
+    </head>
+    <!-- End of head -->
 
   <body>
 
+    <!-- Navigation bar-->
     <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+
+      <!-- TaskManager button-->
       <a class="navbar-brand" href="/projects">TaskManager</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
 
+      <!-- Items in nav bar button -->
       <div class="collapse navbar-collapse" id="navbarsExampleDefault">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item active">
             <a class="nav-link" href="/projects">Home <span class="sr-only">(current)</span></a>
           </li>
-
         </ul>
-          <font face="arial" color="white">Welcome {{user.first_name}} {{user.last_name}} &ensp;&ensp; </font>
+
+        <font face="arial" color="white">Welcome {{user.first_name}} {{user.last_name}} &ensp;&ensp; </font>
         <a class="btn btn-danger" href="/accounts/logout" role="button">LOGOUT</a>
       </div>
     </nav>
 
+    <!-- Main container -->
     <main>
-        <br><br><br> &ensp;
-        <div class="col-1"></div>
+        <br><br> &ensp;
+
+        <!-- Breadcrumb (path) -->
         <div class="col-12">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
@@ -67,63 +57,83 @@
                     <li class="breadcrumb-item "><a href="/project/{{project.id}}">{{project.name}}</a></li>
                     <li class="breadcrumb-item active" aria-current="page">{{task.name}}</li>
                 </ol>
-        </nav>
+            </nav>
         </div>
-        </div>
-        </main>
+
         <br>
+
+        <!-- Jumbotron -->
         <div class="jumbotron jumbotron-fluid">
           <div class="container">
             <h1 class="display-4">{{project.name}}</h1>
-              <h2 class="display-8">{{task.name}}</h2>
+            <h2 class="display-8">{{task.name}}</h2>
             <p class="lead">{{task.description}}</p>
-              <br><a class="btn btn-outline-info" role="button" href="/updatetask/{{task.id}}">Update</a>
-
+            <br><a class="btn btn-outline-info" role="button" href="/updatetask/{{task.id}}">Update</a>
           </div>
         </div>
 
         <br><br><br>
 
-        <div class="col-1"></div>
+        <!-- Table -->
         <div class="col-12">
-        <table class="table">
-          <tbody>
-            <tr>
-              <th scope="row">Assignee</th>
-              <td><span class="badge badge-primary">{{task.assignee}}</span></td>
-            </tr>
-            <tr>
-              <th scope="row">Start date</th>
-              <td>{{task.start_date}}</td>
-            </tr>
-            <tr>
-              <th scope="row">Due date</th>
-              <td>{{task.due_date}}</td>
-            </tr>
-            <tr>
-              <th scope="row">Status</th>
-              <td><span class="badge badge-warning">{{task.status}}</span></td>
-            </tr>
-          </tbody>
-        </table>
+            <table class="table">
+                <tbody>
+
+                    <!-- Assignee -->
+                    <tr>
+                        <th scope="row">Assignee</th>
+                        <td><span class="badge badge-primary">{{task.assignee}}</span></td>
+                    </tr>
+
+                    <!-- Start date -->
+                    <tr>
+                        <th scope="row">Start date</th>
+                        <td>{{task.start_date}}</td>
+                    </tr>
+
+                    <!-- Due date -->
+                    <tr>
+                        <th scope="row">Due date</th>
+                        <td>{{task.due_date}}</td>
+                    </tr>
+
+                    <!-- Status -->
+                    <tr>
+                        <th scope="row">Status</th>
+                        <td><span class="badge badge-warning">{{task.status}}</span></td>
+                    </tr>
+
+                </tbody>
+            </table>
+            <!-- end table -->
+
+
             <br>
             <br>
+
             <a class="btn btn-primary" href="/newjournal/{{task.id}}" role="button">New Entry</a>
+
             <br><br>
+
+            <!-- Journal History -->
             <div class="col-6">
-        <b>History</b>
-        <table class="table">
-          <tbody>
-            {% for journal in list_journals %}
-                <tr>
-                    <td><span class="badge badge-primary">{{journal.author}}</span></td>
-                    <td>{{journal.date}}</td>
-                    <td>{{journal.entry}}</td>
-                </tr>
-            {% endfor %}
-          </tbody>
-        </table>
+                <b>History</b>
+                <table class="table">
+                    <tbody>
+                        {% for journal in list_journals %}
+                            <tr>
+                                <td><span class="badge badge-primary">{{journal.author}}</span></td>
+                                <td>{{journal.date}}</td>
+                                <td>{{journal.entry}}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
             </div>
+
+
+        </div>
+    </main>
 
 
 
