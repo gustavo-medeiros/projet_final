@@ -76,8 +76,9 @@
           <div class="container">
             <h1 class="display-4">{{project.name}}</h1>
               <h2 class="display-8">{{task.name}}</h2>
-              <br>
             <p class="lead">{{task.description}}</p>
+              <br><a class="btn btn-outline-info" role="button" href="/updatetask/{{task.id}}">Update</a>
+
           </div>
         </div>
 
@@ -109,6 +110,7 @@
             <br>
             <a class="btn btn-primary" href="/newjournal/{{task.id}}" role="button">New Entry</a>
             <br><br>
+            <div class="col-6">
         <b>History</b>
         <table class="table">
           <tbody>
@@ -121,6 +123,7 @@
             {% endfor %}
           </tbody>
         </table>
+            </div>
 
 
 

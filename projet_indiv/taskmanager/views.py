@@ -131,6 +131,14 @@ def newjournal(request, id_task):
             form.save()
 
             return task(request, jtask.id)
+        else:
+            form = NewJournalForm()
+            list_projects = Project.objects.all()
+            list_users = User.objects.all()
+            list_status = Status.objects.all()
+
+        return render(request, 'newjournal.html', locals())
+
 
     # if a GET (or any other method) we'll create a blank form
     else:
