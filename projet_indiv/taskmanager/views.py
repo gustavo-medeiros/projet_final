@@ -9,7 +9,6 @@ from taskmanager.forms import NewTaskForm, NewJournalForm
 
 
 # View for the list of projects
-
 @login_required
 def projects(request):
     user = request.user
