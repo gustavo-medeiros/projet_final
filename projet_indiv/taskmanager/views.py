@@ -15,7 +15,7 @@ def projectprogress(project):
     for task in list_tasks:
         i += 1
         progress += task.progress
-    return (progress / i)
+    return (int(progress / i))
 
 
 # View for the list of projects
