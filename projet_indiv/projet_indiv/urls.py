@@ -27,4 +27,7 @@ urlpatterns = [
     path('newtask/', views.newtask),  # A form to add a new task
     path('updatetask/<int:id_task>', views.updatetask),  # A form to update a already existing task
     path('newjournal/<int:id_task>', views.newjournal),  # A form to add a Journal entry to a task
+    path('mytasks/', views.mytasks),  # Lis of the tasks of connected user
+    path('donetasks/', views.donetasks),  # List of done tasks
+    path('activity/<int:id_project>', views.activity),  # A form to update a already existing task
 ]

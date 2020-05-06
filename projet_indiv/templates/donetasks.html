@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block main %}
+    <!-- Main container -->
+    <main>
+
+        <br><br><br><br>
+        <!-- Jumbotron -->
+        <div class="jumbotron jumbotron-fluid">
+          <div class="container">
+            <h1 class="display-4">Your completed tasks</h1>
+            <p class="lead">The list of all of the tasks you completed</p>
+          </div>
+        </div>
+
+        <br><br><br>
+
+        <div class="col-7">
+
+            <!-- Table of tasks -->
+            <table class="table">
+
+                <!-- heads -->
+                <thead>
+                    <tr>
+                        <th scope="col">Task</th>
+                        <th scope="col">project</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+
+                <!-- body of the table -->
+                <tbody>
+                    {% for task in list_tasks %}
+                        <tr>
+                            <th scope="row"><a href="/task/{{task.id}}">{{task.name}}</a></th>
+                            <td scope="row">{{task.project}}</td>
+                            <td scope="row">
+                                <a href="/updatetask/{{task.id}}">
+                                    <img src="https://cdn.onlinewebfonts.com/svg/img_148628.png" width="20" height="20">
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+
+            </table>
+            <!-- end of table -->
+        </div>
+
+
+
+
+
+
+    </main>
+{% endblock %}

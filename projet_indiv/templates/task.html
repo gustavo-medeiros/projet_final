@@ -1,49 +1,6 @@
-<!doctype html>
-<html lang="en">
-    <!-- start of head -->
-    <head>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <meta name="description" content="">
-        <meta name="author" content="">
-        <link rel="icon" href="/docs/4.0/assets/img/favicons/favicon.ico">
+{% extends 'base.html' %}
 
-        <title>UpdateTask</title>
-
-        <link rel="canonical" href="https://getbootstrap.com/docs/4.0/examples/starter-template/">
-
-        <!-- Bootstrap core CSS -->
-        <link href="../../dist/css/bootstrap.min.css" rel="stylesheet">
-
-        <!-- Custom styles for this template -->
-        <link href="starter-template.css" rel="stylesheet">
-    </head>
-    <!-- End of head -->
-
-  <body>
-
-    <!-- Navigation bar-->
-    <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-
-      <!-- TaskManager button-->
-      <a class="navbar-brand" href="/projects">TaskManager</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-
-      <!-- Items in nav bar button -->
-      <div class="collapse navbar-collapse" id="navbarsExampleDefault">
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item active">
-            <a class="nav-link" href="/projects">Home <span class="sr-only">(current)</span></a>
-          </li>
-        </ul>
-
-        <font face="arial" color="white">Welcome {{user.first_name}} {{user.last_name}} &ensp;&ensp; </font>
-        <a class="btn btn-danger" href="/accounts/logout" role="button">LOGOUT</a>
-      </div>
-    </nav>
+{% block main %}
 
     <!-- Main container -->
     <main>
@@ -75,34 +32,43 @@
         <br><br><br>
 
         <!-- Table -->
-        <div class="col-12">
+        <div class="col-6">
             <table class="table">
                 <tbody>
 
                     <!-- Assignee -->
                     <tr>
                         <th scope="row">Assignee</th>
-                        <td><span class="badge badge-primary">{{task.assignee}}</span></td>
+                        <td class="text-center"><span class="badge badge-primary">{{task.assignee}}</span></td>
                     </tr>
 
                     <!-- Start date -->
                     <tr>
                         <th scope="row">Start date</th>
-                        <td>{{task.start_date}}</td>
+                        <td class="text-center">{{task.start_date}}</td>
                     </tr>
 
                     <!-- Due date -->
                     <tr>
                         <th scope="row">Due date</th>
-                        <td>{{task.due_date}}</td>
+                        <td class="text-center">{{task.due_date}}</td>
                     </tr>
 
                     <!-- Status -->
                     <tr>
                         <th scope="row">Status</th>
-                        <td><span class="badge badge-warning">{{task.status}}</span></td>
+                        <td class="text-center"><span class="badge badge-warning">{{task.status}}</span></td>
                     </tr>
 
+                    <!-- Progress -->
+                    <tr>
+                        <th scope="row">Progress</th>
+                        <td scope="row" class="text-center">
+                            <div class="progress">
+                                <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" aria-valuenow="{{task.progress}}" aria-valuemin="0" aria-valuemax="100" style="width:{{task.progress}}%">{{task.progress}}%</div>
+                            </div>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
             <!-- end table -->
@@ -136,19 +102,4 @@
     </main>
 
 
-
-
-
-
-
-    <!-- /.container -->
-
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
-    <script src="../../assets/js/vendor/popper.min.js"></script>
-    <script src="../../dist/js/bootstrap.min.js"></script>
-  </body>
-</html>
+{% endblock %}

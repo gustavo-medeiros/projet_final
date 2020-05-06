@@ -8,6 +8,16 @@ from taskmanager.forms import NewTaskForm, NewJournalForm
 # Create your views here.
 
 
+def projectprogress(project):
+    list_tasks = Task.objects.filter(project=project)
+    i = 0
+    progress = 0
+    for task in list_tasks:
+        i += 1
+        progress += task.progress
+    return (progress / i)
+
+
 # View for the list of projects
 @login_required
 def projects(request):
@@ -33,6 +43,7 @@ def project(request, id_project):
     user = request.user
     project = Project.objects.get(id=id_project)
     list_tasks = Task.objects.filter(project=project)  # List of the tasks of this project
+    progress=projectprogress(project)
     return render(request, 'project.html', locals())
 
 
@@ -143,3 +154,24 @@ def newjournal(request, id_task):
         list_status = Status.objects.all()
 
     return render(request, 'newjournal.html', locals())
+
+@login_required
+def mytasks(request):
+    user = request.user
+    list_tasks = Task.objects.filter(assignee=user)
+    return(render(request, 'mytasks.html',locals()))
+
+@login_required
+def donetasks(request):
+    user = request.user
+    done_status =Status.objects.get(name="Terminée")
+    list_tasks = Task.objects.filter(assignee=user, status=done_status )
+    return(render(request, 'donetasks.html',locals()))
+
+@login_required
+def activity(request,id_project):
+    user=request.user
+    project = Project.objects.get(id=id_project)
+    list_journals = Journal.objects.filter(task__project=project).order_by('-date')
+    return (render(request, 'activity.html', locals()))
+

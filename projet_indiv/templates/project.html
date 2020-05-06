@@ -1,50 +1,6 @@
-<!doctype html>
-<html lang="en">
-    <!-- start of head -->
-    <head>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <meta name="description" content="">
-        <meta name="author" content="">
-        <link rel="icon" href="/docs/4.0/assets/img/favicons/favicon.ico">
+{% extends 'base.html' %}
 
-        <title>UpdateTask</title>
-
-        <link rel="canonical" href="https://getbootstrap.com/docs/4.0/examples/starter-template/">
-
-        <!-- Bootstrap core CSS -->
-        <link href="../../dist/css/bootstrap.min.css" rel="stylesheet">
-
-        <!-- Custom styles for this template -->
-        <link href="starter-template.css" rel="stylesheet">
-    </head>
-    <!-- End of head -->
-
-  <body>
-
-    <!-- Navigation bar-->
-    <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-
-      <!-- TaskManager button-->
-      <a class="navbar-brand" href="/projects">TaskManager</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-
-      <!-- Items in nav bar button -->
-      <div class="collapse navbar-collapse" id="navbarsExampleDefault">
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item active">
-            <a class="nav-link" href="/projects">Home <span class="sr-only">(current)</span></a>
-          </li>
-        </ul>
-
-        <font face="arial" color="white">Welcome {{user.first_name}} {{user.last_name}} &ensp;&ensp; </font>
-        <a class="btn btn-danger" href="/accounts/logout" role="button">LOGOUT</a>
-      </div>
-    </nav>
-
+{% block main %}
     <!-- Main container -->
     <main .ml-1>
         <br><br> &ensp;
@@ -59,6 +15,8 @@
             </nav>
         </div>
 
+
+
         <br>
 
         <!-- jumbotron -->
@@ -67,8 +25,19 @@
             <h1 class="display-4">{{project.name}}</h1>
             <p class="lead">Here is the list the tasks involved in {{project.name}}</p>
               <a class="btn btn-primary" href="/newtask/" role="button">New Task</a>
+              &ensp; &ensp;
+              <a class="btn btn-warning" href="/activity/{{project.id}}" role="button">Activity</a>
           </div>
         </div>
+
+        <p class="col-8">
+            <b><u>Overall progress :</u></b> &ensp;
+            <div class="col-12">
+                <div class="progress">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" aria-valuenow="{{progress}}" aria-valuemin="0" aria-valuemax="100" style="width:{{progress}}%">{{progress}}%</div>
+                </div>
+            </div>
+        </p>
 
         <br>
 
@@ -80,28 +49,54 @@
                 <!-- heads -->
                 <thead>
                     <tr>
-                        <th scope="col">Task</th>
-                        <th scope="col">Assignee</th>
-                        <th scope="col">Start date</th>
-                        <th scope="col">Due date</th>
-                        <th scope="col"></th>
+                        <th scope="col" >Task</th>
+                        <th scope="col" class="text-center">Assignee</th>
+                        <th scope="col" class="text-center">Start date</th>
+                        <th scope="col" class="text-center">Due date</th>
+                        <th scope="col" class="text-center">Progress</th>
+                        <th scope="col" class="text-center"></th>
                     </tr>
                 </thead>
 
                 <!-- body of the table -->
                 <tbody>
                     {% for task in list_tasks %}
-                        <tr>
-                            <th scope="row"><a href="/task/{{task.id}}">{{task.name}}</a></th>
-                            <td scope="row"><span class="badge badge-primary">{{task.assignee}}</span></td>
-                            <td scope="row">{{task.start_date}}</td>
-                            <td scope="row">{{task.due_date}}</td>
-                            <td scope="row">
-                                <a href="/updatetask/{{task.id}}">
-                                    <img src="https://cdn.onlinewebfonts.com/svg/img_148628.png" width="20" height="20">
-                                </a>
-                            </td>
-                        </tr>
+                        {% if task.assignee == user %}
+                            <tr>
+                                <th scope="row" ><a href="/task/{{task.id}}">{{task.name}}</a></th>
+                                <td scope="row" class="text-center"><span class="badge badge-danger">{{task.assignee}}</span></td>
+                                <td scope="row" class="text-center">{{task.start_date}}</td>
+                                <td scope="row" class="text-center">{{task.due_date}}</td>
+                                <td scope="row" class="text-center">
+                                    <div class="progress">
+                                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" aria-valuenow="{{task.progress}}" aria-valuemin="0" aria-valuemax="100" style="width:{{task.progress}}%">{{task.progress}}%</div>
+                                    </div>
+                                </td>
+                                <td scope="row" class="text-center">
+                                    <a href="/updatetask/{{task.id}}">
+                                        <img src="https://cdn.onlinewebfonts.com/svg/img_148628.png" width="20" height="20">
+                                    </a>
+                                </td>
+                            </tr>
+
+                        {% else %}
+                            <tr>
+                                <th scope="row"><a href="/task/{{task.id}}">{{task.name}}</a></th>
+                                <td scope="row" class="text-center"><span class="badge badge-primary">{{task.assignee}}</span></td>
+                                <td scope="row" class="text-center">{{task.start_date}}</td>
+                                <td scope="row" class="text-center">{{task.due_date}}</td>
+                                <td scope="row" class="text-center">
+                                    <div class="progress">
+                                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" aria-valuenow="{{task.progress}}" aria-valuemin="0" aria-valuemax="100" style="width:{{task.progress}}%">{{task.progress}}%</div>
+                                    </div>
+                                </td>
+                                <td scope="row" class="text-center">
+                                    <a href="/updatetask/{{task.id}}">
+                                        <img src="https://cdn.onlinewebfonts.com/svg/img_148628.png" width="20" height="20">
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endif %}
                     {% endfor %}
                 </tbody>
 
@@ -110,15 +105,4 @@
         </div>
 
     </main>
-    <!-- end of main container-->
-
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
-    <script src="../../assets/js/vendor/popper.min.js"></script>
-    <script src="../../dist/js/bootstrap.min.js"></script>
-  </body>
-
-</html>
+{% endblock %}

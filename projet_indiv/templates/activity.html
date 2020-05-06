@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block main %}
+    <!-- Main container -->
+    <main .ml-1>
+        <br><br> &ensp;
+
+        <!-- Breadcrumb (path) -->
+        <div class="col-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/projects">Projects</a></li>
+                    <li class="breadcrumb-item"><a href="/project/{{project.id}}">{{project.name}}</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Activity</li>
+                </ol>
+            </nav>
+        </div>
+
+
+
+        <br>
+
+        <!-- jumbotron -->
+        <div class="jumbotron jumbotron-fluid">
+          <div class="container">
+            <h1 class="display-4">Activity for {{project.name}}</h1>
+            <p class="lead">Latest updates for {{project.name}}</p>
+          </div>
+        </div>
+
+        <br>
+
+        <div class="col-6">
+
+            <!-- Table of tasks -->
+            <table class="table">
+
+                <!-- heads -->
+                <thead>
+                    <tr>
+                        <th scope="col" >Task</th>
+                        <th scope="col" class="text-center">Update </th>
+                    </tr>
+                </thead>
+
+                <!-- body of the table -->
+                <tbody>
+                    {% for journal in list_journals %}
+                            <tr>
+                                <th scope="row" ><a href="/task/{{journal.task.id}}">{{journal.task.name}}</a></th>
+                                <td scope="row" class="text-center">
+                                    <span class="badge badge-primary">{{journal.author}} </span> : <i> {{journal.entry}}</i><br>
+                                    <font size="-1">{{journal.date}}</font>
+
+                                </td>
+
+                            </tr>
+                    {% endfor %}
+                </tbody>
+
+            </table>
+            <!-- end of table -->
+        </div>
+
+    </main>
+{% endblock %}
