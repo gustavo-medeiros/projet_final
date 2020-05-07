@@ -190,10 +190,23 @@ def activity(request, id_project):
 
 @login_required
 def export(request):
-    dataset_p = ProjectResource().export()
-    dataset_s = StatusResource().export()
-    dataset_t = TaskResource().export()
-    dataset_j = JournalResource().export()
-    response = HttpResponse({dataset_p.csv, dataset_s.csv, dataset_t, dataset_j}, content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename="exported_data.csv"'
-    return response
+    if request.method == 'POST':
+        # Get selected option from form
+        file_format = request.POST['file-format']
+        dataset_p = ProjectResource().export()
+        dataset_s = StatusResource().export()
+        dataset_t = TaskResource().export()
+        dataset_j = JournalResource().export()
+        if file_format == 'CSV':
+            response = HttpResponse({dataset_p.csv, dataset_s.csv, dataset_t.csv, dataset_j.csv}, content_type='text/csv')
+            response['Content-Disposition'] = 'attachment; filename="exported_data.csv"'
+            return response
+        elif file_format == 'JSON':
+            response = HttpResponse({dataset_p.json, dataset_s.json, dataset_t.json, dataset_j.json}, content_type='application/json')
+            response['Content-Disposition'] = 'attachment; filename="exported_data.json"'
+            return response
+        elif file_format == 'XLS (Excel)':
+            response = HttpResponse({dataset_p.xls, dataset_s.xls, dataset_t.xls, dataset_j.xls}, content_type='application/vnd.ms-excel')
+            response['Content-Disposition'] = 'attachment; filename="exported_data.xls"'
+            return response
+    return render(request, 'export.html')
