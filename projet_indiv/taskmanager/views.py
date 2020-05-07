@@ -17,6 +17,8 @@ def projectprogress(project):
     for task in list_tasks:
         i += 1
         progress += task.progress
+    if i==0 :
+        i=1
     return (int(progress / i))
 
 
@@ -36,14 +38,9 @@ def projects(request):
         list_projects.append(infos)  # add the infos cells in the list of projects
         infos = []
         count += 1
+    return render(request,'list_projects.html',locals())
 
-    # Test pour une query
-    if request.method == "POST":
-        query = request.POST["query"]
-        user = request.user
-        return render(request,'/taskmanager/task/' + str(id1) + '/' + str(id2))
 
-    return render(request, 'list_projects.html', locals())
 
 
 # View for the display of a project and its details
@@ -169,6 +166,10 @@ def newjournal(request, id_task):
 def mytasks(request):
     user = request.user
     list_tasks = Task.objects.filter(assignee=user)
+    list_projects = Project.objects.filter(members=user)
+    chart_data=[]
+    for project in list_projects:
+        chart_data.append(Task.objects.filter(assignee=user,project=project).count())
     return (render(request, 'mytasks.html', locals()))
 
 
@@ -185,7 +186,10 @@ def activity(request, id_project):
     user = request.user
     project = Project.objects.get(id=id_project)
     list_journals = Journal.objects.filter(task__project=project).order_by('-date')
-    chart_data=[]
+    list_members = Project.objects.get(id=id_project).members.all()
+    contributions = []
+    for member in list_members:
+        contributions.append(nb_contribution(User.objects.get(username=member.username), Project.objects.get(id=id_project)))
 
     return (render(request, 'activity.html', locals()))
 
@@ -194,12 +198,13 @@ def gantt(request,id_project):
     list_members=Project.objects.get(id=id_project).members.all()
     contributions=[]
     for member in list_members:
-        contributions.append([member,nb_contribution(User.objects.get(username=member.username),Project.objects.get(id=id_project))])
+        contributions.append(nb_contribution(User.objects.get(username=member.username),Project.objects.get(id=id_project)))
     return(render(request,'gantt.html',locals()))
 
 def nb_contribution(user,project):
     n=Journal.objects.filter(task__project=project,author=user).count()
     return(n)
+
 @login_required
 def export(request):
     dataset_p = ProjectResource().export()
