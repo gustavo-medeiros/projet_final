@@ -34,6 +34,13 @@ def projects(request):
         list_projects.append(infos)  # add the infos cells in the list of projects
         infos = []
         count += 1
+
+    # Test pour une query
+    if request.method == "POST":
+        query = request.POST["query"]
+        user = request.user
+        return render(request,'/taskmanager/task/' + str(id1) + '/' + str(id2))
+
     return render(request, 'list_projects.html', locals())
 
 
