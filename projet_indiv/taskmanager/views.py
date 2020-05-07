@@ -173,5 +173,18 @@ def activity(request,id_project):
     user=request.user
     project = Project.objects.get(id=id_project)
     list_journals = Journal.objects.filter(task__project=project).order_by('-date')
+    chart_data=[]
+
     return (render(request, 'activity.html', locals()))
 
+@login_required
+def gantt(request,id_project):
+    list_members=Project.objects.get(id=id_project).members.all()
+    contributions=[]
+    for member in list_members:
+        contributions.append([member,nb_contribution(User.objects.get(username=member.username),Project.objects.get(id=id_project))])
+    return(render(request,'gantt.html',locals()))
+
+def nb_contribution(user,project):
+    n=Journal.objects.filter(task__project=project,author=user).count()
+    return(n)
