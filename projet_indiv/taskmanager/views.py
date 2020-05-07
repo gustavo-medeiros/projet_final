@@ -3,6 +3,8 @@ from django.contrib.auth.models import User
 from django.shortcuts import render
 from taskmanager.models import Project, Task, Journal, Status
 from taskmanager.forms import NewTaskForm, NewJournalForm
+from django.http import HttpResponse
+from .resources import ProjectResource, StatusResource, TaskResource, JournalResource
 
 
 # Create your views here.
@@ -34,6 +36,13 @@ def projects(request):
         list_projects.append(infos)  # add the infos cells in the list of projects
         infos = []
         count += 1
+
+    # Test pour une query
+    if request.method == "POST":
+        query = request.POST["query"]
+        user = request.user
+        return render(request,'/taskmanager/task/' + str(id1) + '/' + str(id2))
+
     return render(request, 'list_projects.html', locals())
 
 
@@ -155,22 +164,25 @@ def newjournal(request, id_task):
 
     return render(request, 'newjournal.html', locals())
 
+
 @login_required
 def mytasks(request):
     user = request.user
     list_tasks = Task.objects.filter(assignee=user)
-    return(render(request, 'mytasks.html',locals()))
+    return (render(request, 'mytasks.html', locals()))
+
 
 @login_required
 def donetasks(request):
     user = request.user
-    done_status =Status.objects.get(name="Terminée")
-    list_tasks = Task.objects.filter(assignee=user, status=done_status )
-    return(render(request, 'donetasks.html',locals()))
+    done_status = Status.objects.get(name="Terminée")
+    list_tasks = Task.objects.filter(assignee=user, status=done_status)
+    return (render(request, 'donetasks.html', locals()))
+
 
 @login_required
-def activity(request,id_project):
-    user=request.user
+def activity(request, id_project):
+    user = request.user
     project = Project.objects.get(id=id_project)
     list_journals = Journal.objects.filter(task__project=project).order_by('-date')
     chart_data=[]
@@ -188,3 +200,12 @@ def gantt(request,id_project):
 def nb_contribution(user,project):
     n=Journal.objects.filter(task__project=project,author=user).count()
     return(n)
+@login_required
+def export(request):
+    dataset_p = ProjectResource().export()
+    dataset_s = StatusResource().export()
+    dataset_t = TaskResource().export()
+    dataset_j = JournalResource().export()
+    response = HttpResponse({dataset_p.csv, dataset_s.csv, dataset_t, dataset_j}, content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="exported_data.csv"'
+    return response

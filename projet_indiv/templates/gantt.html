@@ -25,7 +25,7 @@ var ctx = document.getElementById('myChart').getContext('2d');
 var myChart = new Chart(ctx, {
     type: 'bar',
     data: {
-        labels: [{% for],
+        labels: [{% for member in list_members %}],
         datasets: [{
             label: '# of Votes',
             data: [12, 19, 3, 5, 2, 3],
