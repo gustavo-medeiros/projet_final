@@ -209,4 +209,8 @@ def export(request):
             response = HttpResponse({dataset_p.xls, dataset_s.xls, dataset_t.xls, dataset_j.xls}, content_type='application/vnd.ms-excel')
             response['Content-Disposition'] = 'attachment; filename="exported_data.xls"'
             return response
+        elif file_format == 'HTML':
+            response = HttpResponse({dataset_p.html, dataset_s.html, dataset_t.html, dataset_j.html}, content_type='text/html')
+            response['Content-Disposition'] = 'attachment; filename="exported_data.html"'
+            return response
     return render(request, 'export.html')
