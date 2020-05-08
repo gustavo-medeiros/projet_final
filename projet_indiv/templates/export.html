@@ -1,19 +1,25 @@
 {% extends 'base.html' %}
 
 {% block main %}
-<h3>Export Data</h3>
-<p>exporting from database</p>
-<form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    <p>Please select format of file.</p>
-    <select name="file-format" class="form-control my-3">
-        <option selected>Choose format...</option>
-        <option>CSV</option>
-        <option>JSON</option>
-        <option>XLS (Excel)</option>
-        <option>HTML</option>
-      </select>
-    <button class="btn btn-primary" type="submit">Export</button>
-  </form>
+<br/><br/><br/><br/>
+
+<div class="col-12">
+    <h3>Export Data</h3>
+    <p>Export data from the database into the desired format.</p>
+    <br/>
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <p>Please select format of file.</p>
+        <select name="file-format" class="form-control my-3">
+            <option selected>Choose format...</option>
+            <option>CSV</option>
+            <option>JSON</option>
+            <option>XLS (Excel)</option>
+            <option>HTML</option>
+          </select>
+        <button class="btn btn-primary" type="submit">Export</button>
+      </form>
+</div>
 
 {% endblock %}
