@@ -5,7 +5,6 @@ from taskmanager.models import Project, Task, Journal, Status
 from taskmanager.forms import NewTaskForm, NewJournalForm
 from django.http import HttpResponse
 from .resources import ProjectResource, StatusResource, TaskResource, JournalResource
-from .models import Project
 import csv
 
 
@@ -215,9 +214,9 @@ def export(request):
         data_type = request.POST['data-type']
         if file_format == 'CSV':
             response = HttpResponse(content_type='text/csv')
-            response['Content-Disposition'] = 'attachment; filename="projects.csv"'
             writer = csv.writer(response)
             if data_type == 'Projects':
+                response['Content-Disposition'] = 'attachment; filename="projects.csv"'
                 writer.writerow(['Project', 'Members', 'Tasks'])
                 for p in Project.objects.all():
                     members = ''
@@ -230,8 +229,13 @@ def export(request):
                         tasks += ', ' + t.name
                     tasks = tasks.replace(', ', '', 1)
                     writer.writerow([p.name, members, tasks])
-
-            return response
+                return response
+            if data_type == 'Tasks':
+                response['Content-Disposition'] = 'attachment; filename="tasks.csv"'
+                writer.writerow(['Name', 'Project', 'Description', 'Assignee', 'Start Date', 'Due Date', 'Priority', 'Status', 'Progress'])
+                for t in Task.objects.all():
+                    writer.writerow([t.name, t.project, t.description, t.assignee, t.start_date, t.due_date, t.priority, t.status, t.progress])
+                return response
     return render(request, 'export.html')
 
 @login_required
