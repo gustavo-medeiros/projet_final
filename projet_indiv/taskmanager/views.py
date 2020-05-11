@@ -260,6 +260,12 @@ def export(request):
                 response = HttpResponse(JsonResponse(projects_list, safe=False), content_type='application/json')
                 response['Content-Disposition'] = 'attachment; filename="projects.json"'
                 return response
+            if data_type == 'Tasks':
+                tasks = Task.objects.all().values('name', 'project', 'description', 'assignee', 'start_date', 'due_date', 'priority', 'status', 'progress')  # or simply .values() to get all fields
+                tasks_list = list(tasks)  # important: convert the QuerySet to a list object
+                response = HttpResponse(JsonResponse(tasks_list, safe=False), content_type='application/json')
+                response['Content-Disposition'] = 'attachment; filename="tasks.json"'
+                return response
 
     return render(request, 'export.html')
 
