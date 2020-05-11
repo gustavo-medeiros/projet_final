@@ -344,7 +344,34 @@ def export(request):
 
                 wb.save(response)
                 return response
+            if data_type == 'Journals':
+                response['Content-Disposition'] = 'attachment; filename="journals.xls"'
+                wb = xlwt.Workbook(encoding='utf-8')
+                ws = wb.add_sheet('Journals')
 
+                # Sheet header, first row
+                row_num = 0
+
+                font_style = xlwt.XFStyle()
+                font_style.font.bold = True
+
+                columns = ['Entry', 'Date', 'Author', 'Task']
+                for col_num in range(len(columns)):
+                    ws.write(row_num, col_num, columns[col_num], font_style)
+
+                # Sheet body, remaining rows
+                font_style = xlwt.XFStyle()
+
+                for j in Journal.objects.all():
+                    row_num += 1
+                    ws.write(row_num, 0, j.entry, font_style)
+                    if j.date:
+                        ws.write(row_num, 1, j.date.strftime("%Y-%m-%d %H:%M"), font_style)
+                    ws.write(row_num, 2, j.author.username, font_style)
+                    ws.write(row_num, 3, j.task.name, font_style)
+
+                wb.save(response)
+                return response
     return render(request, 'export.html')
 
 @login_required
