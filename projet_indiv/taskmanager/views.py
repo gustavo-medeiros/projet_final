@@ -5,6 +5,8 @@ from taskmanager.models import Project, Task, Journal, Status
 from taskmanager.forms import NewTaskForm, NewJournalForm
 from django.http import HttpResponse
 from .resources import ProjectResource, StatusResource, TaskResource, JournalResource
+from .models import Project
+import csv
 
 
 # Create your views here.
@@ -205,8 +207,35 @@ def nb_contribution(user,project):
     n=Journal.objects.filter(task__project=project,author=user).count()
     return(n)
 
+
 @login_required
 def export(request):
+    if request.method == 'POST':
+        file_format = request.POST['file-format']
+        data_type = request.POST['data-type']
+        if file_format == 'CSV':
+            response = HttpResponse(content_type='text/csv')
+            response['Content-Disposition'] = 'attachment; filename="projects.csv"'
+            writer = csv.writer(response)
+            if data_type == 'Projects':
+                writer.writerow(['Project', 'Members', 'Tasks'])
+                for p in Project.objects.all():
+                    members = ''
+                    for m in p.members.all():
+                        members += ', ' + m.username
+                    members = members.replace(', ', '', 1)
+
+                    tasks = ''
+                    for t in p.task_set.all():
+                        tasks += ', ' + t.name
+                    tasks = tasks.replace(', ', '', 1)
+                    writer.writerow([p.name, members, tasks])
+
+            return response
+    return render(request, 'export.html')
+
+@login_required
+def cheat_export(request):
     if request.method == 'POST':
         # Get selected option from form
         file_format = request.POST['file-format']
