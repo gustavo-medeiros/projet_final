@@ -244,6 +244,12 @@ def export(request):
                 for j in Journal.objects.all():
                     writer.writerow([j.entry, j.date, j.author, j.task])
                 return response
+            if data_type == 'Status':
+                response['Content-Disposition'] = 'attachment; filename="status.csv"'
+                writer.writerow(['Name'])
+                for s in Status.objects.all():
+                    writer.writerow([s.name])
+                return response
         if file_format == 'JSON':
             if data_type == 'Projects':
                 projects_list = []
