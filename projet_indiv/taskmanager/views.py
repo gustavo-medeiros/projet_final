@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.shortcuts import render
 from taskmanager.models import Project, Task, Journal, Status
 from taskmanager.forms import NewTaskForm, NewJournalForm
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from .resources import ProjectResource, StatusResource, TaskResource, JournalResource
 import csv
 
@@ -222,12 +222,12 @@ def export(request):
                     members = ''
                     for m in p.members.all():
                         members += ', ' + m.username
-                    members = members.replace(', ', '', 1)
+                    members = members.replace(',', '', 1)
 
                     tasks = ''
                     for t in p.task_set.all():
-                        tasks += ', ' + t.name
-                    tasks = tasks.replace(', ', '', 1)
+                        tasks += ',' + t.name
+                    tasks = tasks.replace(',', '', 1)
                     writer.writerow([p.name, members, tasks])
                 return response
             if data_type == 'Tasks':
@@ -242,6 +242,25 @@ def export(request):
                 for j in Journal.objects.all():
                     writer.writerow([j.entry, j.date, j.author, j.task])
                 return response
+        if file_format == 'JSON':
+            if data_type == 'Projects':
+                projects_list = []
+                for p in Project.objects.all():
+                    members = ''
+                    for m in p.members.all():
+                        members += ',' + m.username
+                    members = members.replace(',', '', 1)
+
+                    tasks = ''
+                    for t in p.task_set.all():
+                        tasks += ',' + t.name
+                    tasks = tasks.replace(',', '', 1)
+
+                    projects_list.append({"Name": p.name, "Members": members, "Tasks": tasks})
+                response = HttpResponse(JsonResponse(projects_list, safe=False), content_type='application/json')
+                response['Content-Disposition'] = 'attachment; filename="projects.json"'
+                return response
+
     return render(request, 'export.html')
 
 @login_required
