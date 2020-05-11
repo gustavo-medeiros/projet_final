@@ -280,6 +280,12 @@ def export(request):
                 response = HttpResponse(JsonResponse(journals_list, safe=False), content_type='application/json')
                 response['Content-Disposition'] = 'attachment; filename="journals.json"'
                 return response
+            if data_type == 'Status':
+                status = Status.objects.all().values('name')  # or simply .values() to get all fields
+                status_list = list(status)  # important: convert the QuerySet to a list object
+                response = HttpResponse(JsonResponse(status_list, safe=False), content_type='application/json')
+                response['Content-Disposition'] = 'attachment; filename="status.json"'
+                return response
         if file_format == 'XLS (Excel)':
             response = HttpResponse(content_type='application/ms-excel')
             if data_type == 'Projects':
