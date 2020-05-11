@@ -279,7 +279,7 @@ def export(request):
             if data_type == 'Projects':
                 response['Content-Disposition'] = 'attachment; filename="projects.xls"'
                 wb = xlwt.Workbook(encoding='utf-8')
-                ws = wb.add_sheet('Users')
+                ws = wb.add_sheet('Projects')
 
                 # Sheet header, first row
                 row_num = 0
@@ -309,6 +309,38 @@ def export(request):
                     ws.write(row_num, 0, p.name, font_style)
                     ws.write(row_num, 1, members, font_style)
                     ws.write(row_num, 2, tasks, font_style)
+
+                wb.save(response)
+                return response
+            if data_type == 'Tasks':
+                response['Content-Disposition'] = 'attachment; filename="tasks.xls"'
+                wb = xlwt.Workbook(encoding='utf-8')
+                ws = wb.add_sheet('Tasks')
+
+                # Sheet header, first row
+                row_num = 0
+
+                font_style = xlwt.XFStyle()
+                font_style.font.bold = True
+
+                columns = ['Name', 'Project', 'Description', 'Assignee', 'Start Date', 'Due Date', 'Priority', 'Status', 'Progress']
+                for col_num in range(len(columns)):
+                    ws.write(row_num, col_num, columns[col_num], font_style)
+
+                # Sheet body, remaining rows
+                font_style = xlwt.XFStyle()
+
+                for t in Task.objects.all():
+                    row_num += 1
+                    ws.write(row_num, 0, t.name, font_style)
+                    ws.write(row_num, 1, t.project.name, font_style)
+                    ws.write(row_num, 2, t.description, font_style)
+                    ws.write(row_num, 3, t.assignee.username, font_style)
+                    ws.write(row_num, 4, t.start_date.strftime("%Y-%m-%d"), font_style)
+                    ws.write(row_num, 5, t.due_date.strftime("%Y-%m-%d"), font_style)
+                    ws.write(row_num, 6, t.priority, font_style)
+                    ws.write(row_num, 7, t.status.name, font_style)
+                    ws.write(row_num, 8, t.progress, font_style)
 
                 wb.save(response)
                 return response
