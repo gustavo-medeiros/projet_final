@@ -384,6 +384,28 @@ def export(request):
 
                 wb.save(response)
                 return response
+            if data_type == 'Status':
+                response['Content-Disposition'] = 'attachment; filename="status.xls"'
+                wb = xlwt.Workbook(encoding='utf-8')
+                ws = wb.add_sheet('Status')
+
+                # Sheet header, first row
+                row_num = 0
+
+                font_style = xlwt.XFStyle()
+                font_style.font.bold = True
+
+                ws.write(row_num, 0, 'Name', font_style)
+
+                # Sheet body, remaining rows
+                font_style = xlwt.XFStyle()
+
+                for s in Status.objects.all():
+                    row_num += 1
+                    ws.write(row_num, 0, s.name, font_style)
+
+                wb.save(response)
+                return response
     return render(request, 'export.html')
 
 @login_required
