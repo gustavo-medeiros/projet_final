@@ -256,15 +256,21 @@ def export(request):
                         tasks += ',' + t.name
                     tasks = tasks.replace(',', '', 1)
 
-                    projects_list.append({"Name": p.name, "Members": members, "Tasks": tasks})
+                    projects_list.append({"name": p.name, "members": members, "tasks": tasks})
                 response = HttpResponse(JsonResponse(projects_list, safe=False), content_type='application/json')
                 response['Content-Disposition'] = 'attachment; filename="projects.json"'
                 return response
             if data_type == 'Tasks':
-                tasks = Task.objects.all().values('name', 'project', 'description', 'assignee', 'start_date', 'due_date', 'priority', 'status', 'progress')  # or simply .values() to get all fields
+                tasks = Task.objects.all().values('name', 'project__name', 'description', 'assignee__username', 'start_date', 'due_date', 'priority', 'status__name', 'progress')  # or simply .values() to get all fields
                 tasks_list = list(tasks)  # important: convert the QuerySet to a list object
                 response = HttpResponse(JsonResponse(tasks_list, safe=False), content_type='application/json')
                 response['Content-Disposition'] = 'attachment; filename="tasks.json"'
+                return response
+            if data_type == 'Journals':
+                journals = Journal.objects.all().values('entry', 'date', 'author__username', 'task__name')  # or simply .values() to get all fields
+                journals_list = list(journals)  # important: convert the QuerySet to a list object
+                response = HttpResponse(JsonResponse(journals_list, safe=False), content_type='application/json')
+                response['Content-Disposition'] = 'attachment; filename="journals.json"'
                 return response
 
     return render(request, 'export.html')
