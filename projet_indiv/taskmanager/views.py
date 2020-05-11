@@ -6,6 +6,7 @@ from taskmanager.forms import NewTaskForm, NewJournalForm
 from django.http import HttpResponse, JsonResponse
 from .resources import ProjectResource, StatusResource, TaskResource, JournalResource
 import csv
+import xlwt
 
 
 # Create your views here.
@@ -228,6 +229,7 @@ def export(request):
                     for t in p.task_set.all():
                         tasks += ',' + t.name
                     tasks = tasks.replace(',', '', 1)
+
                     writer.writerow([p.name, members, tasks])
                 return response
             if data_type == 'Tasks':
@@ -271,6 +273,44 @@ def export(request):
                 journals_list = list(journals)  # important: convert the QuerySet to a list object
                 response = HttpResponse(JsonResponse(journals_list, safe=False), content_type='application/json')
                 response['Content-Disposition'] = 'attachment; filename="journals.json"'
+                return response
+        if file_format == 'XLS (Excel)':
+            response = HttpResponse(content_type='application/ms-excel')
+            if data_type == 'Projects':
+                response['Content-Disposition'] = 'attachment; filename="projects.xls"'
+                wb = xlwt.Workbook(encoding='utf-8')
+                ws = wb.add_sheet('Users')
+
+                # Sheet header, first row
+                row_num = 0
+
+                font_style = xlwt.XFStyle()
+                font_style.font.bold = True
+
+                columns = ['Project', 'Members', 'Tasks']
+                for col_num in range(len(columns)):
+                    ws.write(row_num, col_num, columns[col_num], font_style)
+
+                # Sheet body, remaining rows
+                font_style = xlwt.XFStyle()
+
+                for p in Project.objects.all():
+                    members = ''
+                    for m in p.members.all():
+                        members += ',' + m.username
+                    members = members.replace(',', '', 1)
+
+                    tasks = ''
+                    for t in p.task_set.all():
+                        tasks += ',' + t.name
+                    tasks = tasks.replace(',', '', 1)
+
+                    row_num += 1
+                    ws.write(row_num, 0, p.name, font_style)
+                    ws.write(row_num, 1, members, font_style)
+                    ws.write(row_num, 2, tasks, font_style)
+
+                wb.save(response)
                 return response
 
     return render(request, 'export.html')
