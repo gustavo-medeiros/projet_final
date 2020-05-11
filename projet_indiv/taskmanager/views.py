@@ -236,6 +236,12 @@ def export(request):
                 for t in Task.objects.all():
                     writer.writerow([t.name, t.project, t.description, t.assignee, t.start_date, t.due_date, t.priority, t.status, t.progress])
                 return response
+            if data_type == 'Journals':
+                response['Content-Disposition'] = 'attachment; filename="journals.csv"'
+                writer.writerow(['Entry', 'Date', 'Author', 'Task'])
+                for j in Journal.objects.all():
+                    writer.writerow([j.entry, j.date, j.author, j.task])
+                return response
     return render(request, 'export.html')
 
 @login_required
