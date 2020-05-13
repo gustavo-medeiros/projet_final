@@ -410,6 +410,11 @@ def export(request):
                 wb.save(response)
                 return response
         if file_format == 'XML':
+            if data_type == 'Projects':
+                data = serializers.serialize("xml", Project.objects.all())
+                response = HttpResponse(data, content_type='text/xml')
+                response['Content-Disposition'] = 'attachment; filename="projects.xml"'
+                return response
             if data_type == 'Tasks':
                 data = serializers.serialize("xml", Task.objects.all())
                 response = HttpResponse(data, content_type='text/xml')
