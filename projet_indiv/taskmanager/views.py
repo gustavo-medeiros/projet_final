@@ -410,6 +410,11 @@ def export(request):
                 wb.save(response)
                 return response
         if file_format == 'XML':
+            if data_type == 'Journals':
+                data = serializers.serialize("xml", Journal.objects.all())
+                response = HttpResponse(data, content_type='text/xml')
+                response['Content-Disposition'] = 'attachment; filename="journals.xml"'
+                return response
             if data_type == 'Status':
                 data = serializers.serialize("xml", Status.objects.all(), fields='name')
                 response = HttpResponse(data, content_type='text/xml')
