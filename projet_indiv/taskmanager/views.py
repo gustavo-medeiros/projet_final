@@ -300,9 +300,18 @@ def export(request):
             return response
         if file_format == 'XLS (Excel)':
             response = HttpResponse(content_type='application/ms-excel')
-            if data_type == 'Projects':
+            if data_type == 'All':
+                response['Content-Disposition'] = 'attachment; filename="all_data.xls"'
+            elif data_type == 'Projects':
                 response['Content-Disposition'] = 'attachment; filename="projects.xls"'
-                wb = xlwt.Workbook(encoding='utf-8')
+            elif data_type == 'Tasks':
+                response['Content-Disposition'] = 'attachment; filename="tasks.xls"'
+            elif data_type == 'Journals':
+                response['Content-Disposition'] = 'attachment; filename="journals.xls"'
+            elif data_type == 'Status':
+                response['Content-Disposition'] = 'attachment; filename="status.xls"'
+            wb = xlwt.Workbook(encoding='utf-8')
+            if data_type == 'Projects' or data_type == 'All':
                 ws = wb.add_sheet('Projects')
 
                 # Sheet header, first row
@@ -334,11 +343,7 @@ def export(request):
                     ws.write(row_num, 1, members, font_style)
                     ws.write(row_num, 2, tasks, font_style)
 
-                wb.save(response)
-                return response
-            if data_type == 'Tasks':
-                response['Content-Disposition'] = 'attachment; filename="tasks.xls"'
-                wb = xlwt.Workbook(encoding='utf-8')
+            if data_type == 'Tasks' or data_type == 'All':
                 ws = wb.add_sheet('Tasks')
 
                 # Sheet header, first row
@@ -366,11 +371,7 @@ def export(request):
                     ws.write(row_num, 7, t.status.name, font_style)
                     ws.write(row_num, 8, t.progress, font_style)
 
-                wb.save(response)
-                return response
-            if data_type == 'Journals':
-                response['Content-Disposition'] = 'attachment; filename="journals.xls"'
-                wb = xlwt.Workbook(encoding='utf-8')
+            if data_type == 'Journals' or data_type == 'All':
                 ws = wb.add_sheet('Journals')
 
                 # Sheet header, first row
@@ -394,11 +395,7 @@ def export(request):
                     ws.write(row_num, 2, j.author.username, font_style)
                     ws.write(row_num, 3, j.task.name, font_style)
 
-                wb.save(response)
-                return response
-            if data_type == 'Status':
-                response['Content-Disposition'] = 'attachment; filename="status.xls"'
-                wb = xlwt.Workbook(encoding='utf-8')
+            if data_type == 'Status' or data_type == 'All':
                 ws = wb.add_sheet('Status')
 
                 # Sheet header, first row
@@ -416,8 +413,8 @@ def export(request):
                     row_num += 1
                     ws.write(row_num, 0, s.name, font_style)
 
-                wb.save(response)
-                return response
+            wb.save(response)
+            return response
         if file_format == 'XML':
             if data_type == 'Projects':
                 data = serializers.serialize("xml", Project.objects.all())
