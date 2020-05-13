@@ -4,12 +4,9 @@ from django.shortcuts import render
 from taskmanager.models import Project, Task, Journal, Status
 from taskmanager.forms import NewTaskForm, NewJournalForm
 from django.http import HttpResponse, JsonResponse
-from .resources import ProjectResource, StatusResource, TaskResource, JournalResource
 import csv
 import xlwt
-import xml
 from django.core import serializers
-from django.core.files import File
 
 
 # Create your views here.
@@ -430,31 +427,4 @@ def export(request):
                 response = HttpResponse(data, content_type='text/xml')
                 response['Content-Disposition'] = 'attachment; filename="status.xml"'
                 return response
-    return render(request, 'export.html')
-
-@login_required
-def cheat_export(request):
-    if request.method == 'POST':
-        # Get selected option from form
-        file_format = request.POST['file-format']
-        dataset_p = ProjectResource().export()
-        dataset_s = StatusResource().export()
-        dataset_t = TaskResource().export()
-        dataset_j = JournalResource().export()
-        if file_format == 'CSV':
-            response = HttpResponse({dataset_p.csv, dataset_s.csv, dataset_t.csv, dataset_j.csv}, content_type='text/csv')
-            response['Content-Disposition'] = 'attachment; filename="exported_data.csv"'
-            return response
-        elif file_format == 'JSON':
-            response = HttpResponse({dataset_p.json, dataset_s.json, dataset_t.json, dataset_j.json}, content_type='application/json')
-            response['Content-Disposition'] = 'attachment; filename="exported_data.json"'
-            return response
-        elif file_format == 'XLS (Excel)':
-            response = HttpResponse({dataset_p.xls, dataset_s.xls, dataset_t.xls, dataset_j.xls}, content_type='application/vnd.ms-excel')
-            response['Content-Disposition'] = 'attachment; filename="exported_data.xls"'
-            return response
-        elif file_format == 'HTML':
-            response = HttpResponse({dataset_p.html, dataset_s.html, dataset_t.html, dataset_j.html}, content_type='text/html')
-            response['Content-Disposition'] = 'attachment; filename="exported_data.html"'
-            return response
     return render(request, 'export.html')
