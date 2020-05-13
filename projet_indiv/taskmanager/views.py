@@ -7,6 +7,9 @@ from django.http import HttpResponse, JsonResponse
 from .resources import ProjectResource, StatusResource, TaskResource, JournalResource
 import csv
 import xlwt
+import xml
+from django.core import serializers
+from django.core.files import File
 
 
 # Create your views here.
@@ -405,6 +408,12 @@ def export(request):
                     ws.write(row_num, 0, s.name, font_style)
 
                 wb.save(response)
+                return response
+        if file_format == 'XML':
+            if data_type == 'Status':
+                data = serializers.serialize("xml", Status.objects.all(), fields='name')
+                response = HttpResponse(data, content_type='text/xml')
+                response['Content-Disposition'] = 'attachment; filename="status.xml"'
                 return response
     return render(request, 'export.html')
 
