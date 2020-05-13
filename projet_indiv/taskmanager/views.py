@@ -216,8 +216,18 @@ def export(request):
         if file_format == 'CSV':
             response = HttpResponse(content_type='text/csv')
             writer = csv.writer(response)
-            if data_type == 'Projects':
+            if data_type == 'All':
+                response['Content-Disposition'] = 'attachment; filename="all_data.csv"'
+            elif data_type == 'Projects':
                 response['Content-Disposition'] = 'attachment; filename="projects.csv"'
+            elif data_type == 'Tasks':
+                response['Content-Disposition'] = 'attachment; filename="tasks.csv"'
+            elif data_type == 'Journals':
+                response['Content-Disposition'] = 'attachment; filename="journals.csv"'
+            elif data_type == 'Status':
+                response['Content-Disposition'] = 'attachment; filename="status.csv"'
+
+            if data_type == 'Projects' or data_type=='All':
                 writer.writerow(['Project', 'Members', 'Tasks'])
                 for p in Project.objects.all():
                     members = ''
@@ -231,25 +241,23 @@ def export(request):
                     tasks = tasks.replace(',', '', 1)
 
                     writer.writerow([p.name, members, tasks])
-                return response
-            if data_type == 'Tasks':
-                response['Content-Disposition'] = 'attachment; filename="tasks.csv"'
+                writer.writerow([])
+            if data_type == 'Tasks' or data_type == 'All':
                 writer.writerow(['Name', 'Project', 'Description', 'Assignee', 'Start Date', 'Due Date', 'Priority', 'Status', 'Progress'])
                 for t in Task.objects.all():
                     writer.writerow([t.name, t.project, t.description, t.assignee, t.start_date, t.due_date, t.priority, t.status, t.progress])
-                return response
-            if data_type == 'Journals':
-                response['Content-Disposition'] = 'attachment; filename="journals.csv"'
+                writer.writerow([])
+            if data_type == 'Journals' or data_type == 'All':
                 writer.writerow(['Entry', 'Date', 'Author', 'Task'])
                 for j in Journal.objects.all():
                     writer.writerow([j.entry, j.date, j.author, j.task])
-                return response
-            if data_type == 'Status':
-                response['Content-Disposition'] = 'attachment; filename="status.csv"'
+                writer.writerow([])
+            if data_type == 'Status' or data_type == 'All':
                 writer.writerow(['Name'])
                 for s in Status.objects.all():
                     writer.writerow([s.name])
-                return response
+            return response
+
         if file_format == 'JSON':
             if data_type == 'Projects':
                 projects_list = []
