@@ -257,9 +257,8 @@ def export(request):
                 for s in Status.objects.all():
                     writer.writerow([s.name])
             return response
-
         if file_format == 'JSON':
-            if data_type == 'Projects':
+            if data_type == 'Projects' or data_type == 'All':
                 projects_list = []
                 for p in Project.objects.all():
                     members = ''
@@ -273,27 +272,32 @@ def export(request):
                     tasks = tasks.replace(',', '', 1)
 
                     projects_list.append({"name": p.name, "members": members, "tasks": tasks})
-                response = HttpResponse(JsonResponse(projects_list, safe=False), content_type='application/json')
-                response['Content-Disposition'] = 'attachment; filename="projects.json"'
-                return response
-            if data_type == 'Tasks':
+                if data_type == 'Projects':
+                    response = HttpResponse(JsonResponse(projects_list, safe=False), content_type='application/json')
+                    response['Content-Disposition'] = 'attachment; filename="projects.json"'
+            if data_type == 'Tasks' or data_type == 'All':
                 tasks = Task.objects.all().values('name', 'project__name', 'description', 'assignee__username', 'start_date', 'due_date', 'priority', 'status__name', 'progress')  # or simply .values() to get all fields
                 tasks_list = list(tasks)  # important: convert the QuerySet to a list object
-                response = HttpResponse(JsonResponse(tasks_list, safe=False), content_type='application/json')
-                response['Content-Disposition'] = 'attachment; filename="tasks.json"'
-                return response
-            if data_type == 'Journals':
+                if data_type == 'Tasks':
+                    response = HttpResponse(JsonResponse(tasks_list, safe=False), content_type='application/json')
+                    response['Content-Disposition'] = 'attachment; filename="tasks.json"'
+            if data_type == 'Journals' or data_type == 'All':
                 journals = Journal.objects.all().values('entry', 'date', 'author__username', 'task__name')  # or simply .values() to get all fields
                 journals_list = list(journals)  # important: convert the QuerySet to a list object
-                response = HttpResponse(JsonResponse(journals_list, safe=False), content_type='application/json')
-                response['Content-Disposition'] = 'attachment; filename="journals.json"'
-                return response
-            if data_type == 'Status':
+                if data_type == 'Journals':
+                    response = HttpResponse(JsonResponse(journals_list, safe=False), content_type='application/json')
+                    response['Content-Disposition'] = 'attachment; filename="journals.json"'
+            if data_type == 'Status' or data_type == 'All':
                 status = Status.objects.all().values('name')  # or simply .values() to get all fields
                 status_list = list(status)  # important: convert the QuerySet to a list object
-                response = HttpResponse(JsonResponse(status_list, safe=False), content_type='application/json')
-                response['Content-Disposition'] = 'attachment; filename="status.json"'
-                return response
+                if data_type == 'Status':
+                    response = HttpResponse(JsonResponse(status_list, safe=False), content_type='application/json')
+                    response['Content-Disposition'] = 'attachment; filename="status.json"'
+            if data_type == 'All':
+                all_data_list = projects_list + tasks_list + journals_list + status_list
+                response = HttpResponse(JsonResponse(all_data_list, safe=False), content_type='application/json')
+                response['Content-Disposition'] = 'attachment; filename="all_data.json"'
+            return response
         if file_format == 'XLS (Excel)':
             response = HttpResponse(content_type='application/ms-excel')
             if data_type == 'Projects':
