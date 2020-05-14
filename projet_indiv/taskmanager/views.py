@@ -416,24 +416,23 @@ def export(request):
             wb.save(response)
             return response
         if file_format == 'XML':
+            if data_type == 'All':  # All option for xml not implemented, just returns to the options form
+                return render(request, 'export.html')
             if data_type == 'Projects':
-                data = serializers.serialize("xml", Project.objects.all())
-                response = HttpResponse(data, content_type='text/xml')
+                projects_data = serializers.serialize("xml", Project.objects.all())
+                response = HttpResponse(projects_data, content_type='text/xml')
                 response['Content-Disposition'] = 'attachment; filename="projects.xml"'
-                return response
             if data_type == 'Tasks':
-                data = serializers.serialize("xml", Task.objects.all())
-                response = HttpResponse(data, content_type='text/xml')
+                tasks_data = serializers.serialize("xml", Task.objects.all())
+                response = HttpResponse(tasks_data, content_type='text/xml')
                 response['Content-Disposition'] = 'attachment; filename="tasks.xml"'
-                return response
             if data_type == 'Journals':
-                data = serializers.serialize("xml", Journal.objects.all())
-                response = HttpResponse(data, content_type='text/xml')
+                journals_data = serializers.serialize("xml", Journal.objects.all())
+                response = HttpResponse(journals_data, content_type='text/xml')
                 response['Content-Disposition'] = 'attachment; filename="journals.xml"'
-                return response
             if data_type == 'Status':
-                data = serializers.serialize("xml", Status.objects.all())
-                response = HttpResponse(data, content_type='text/xml')
+                status_data = serializers.serialize("xml", Status.objects.all())
+                response = HttpResponse(status_data, content_type='text/xml')
                 response['Content-Disposition'] = 'attachment; filename="status.xml"'
-                return response
+            return response
     return render(request, 'export.html')
